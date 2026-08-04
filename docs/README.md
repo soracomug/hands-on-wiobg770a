@@ -1,5 +1,15 @@
 # WioBG770a ハンズオン
 
+## 事前に用意するもの
+
+- WioBG770a
+- USB ケーブル
+- PC
+- SORACOM ユーザーコンソールにログインできるアカウント
+- SORACOM IoT SIM
+
+## 手順
+
 - [1: 環境構築 (VSCode/Platform.IO インストール)](./chapter1/README.md)
 - [2: hello, world で L チカ](./chapter2/README.md)
 - [3: SIM の開通と SORACOM Harvest Data の設定](./chapter3/README.md)
