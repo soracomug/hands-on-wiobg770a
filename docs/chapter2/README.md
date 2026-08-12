@@ -20,7 +20,7 @@ WioBG770a に内蔵された LED を点滅させてみましょう。
 VSCodeを起動し、PlatformIO のホーム画面から「New Project」を選択してください。  
 左のメニューの、PlatformIOのアイコンをクリックするか、`Ctrl+Shift+P` でコマンドパレットを開き「PlatformIO: Home」と入力して選択してください。
 
-![Create New Project](image/create_new_project.png)
+![Create New Project](image/create-new-project.png)
 
 (*)上記VSCodeの画面は環境によって異なる場合があります。アイコン画像が表示されないといった場合はコマンドパレットを使ってください。
 
