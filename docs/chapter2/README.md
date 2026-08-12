@@ -25,7 +25,7 @@ VSCodeを起動し、PlatformIO のホーム画面から「New Project」を選�
 (*)上記VSCodeの画面は環境によって異なる場合があります。アイコン画像が表示されないといった場合はコマンドパレットを使ってください。
 
 nameに「blink」、boardは「Wio BG770A(Seeed)」を選択し、「Finish」をクリックしてください。
-![alt text](image.png)
+
 ![create blink project](image/create-blink-project.png)
 
 以下のコードを `platformio.ini` に貼り付けてください。
