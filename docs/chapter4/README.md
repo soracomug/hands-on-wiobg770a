@@ -186,18 +186,6 @@ static void stopWithBlink() {
 
 この章と同じプログラムは [`sample/src/main.ino`](sample/src/main.ino) にもあります。
 
-このプログラムは次の順序で動作します。
-
-1. APN に `soracom.io`、通信方式に LTE-M を設定する
-2. BG770A の電源を入れる
-3. セルラーネットワークに接続する
-4. 稼働時間 `uptime_ms` とチップ内部温度 `mcu_temp_c` を JSON にする
-5. `http://uni.soracom.io/` に HTTP POST する
-6. 1 分ごとに手順 4 と 5 を繰り返す
-
-> [!NOTE]
-> `mcu_temp_c` は nRF52840 のチップ内部温度です。室温を正確に測るための値ではありません。外部センサーの値を送る方法は次の章で扱います。
-
 ## 3. プログラムを実行する
 
 WioBG770a を USB ケーブルで PC に接続します。PlatformIO の **Upload and Monitor** を実行して、プログラムの書き込みとシリアルモニターの起動を行ってください。
@@ -221,7 +209,99 @@ WioBG770a を USB ケーブルで PC に接続します。PlatformIO の **Uploa
 
 この章の設定では、`Status code: 201` と表示されれば Unified Endpoint がデータを受け付けています。レスポンス設定によっては、別の `2xx` が返る場合もあります。
 
-## 4. Harvest Data で確認する
+## 4. コード解説
+
+このプログラムは次の順序で動作します。
+
+1. APN に `soracom.io`、通信方式に LTE-M を設定する
+2. BG770A の電源を入れる
+3. セルラーネットワークに接続する
+4. 稼働時間 `uptime_ms` とチップ内部温度 `mcu_temp_c` を JSON にする
+5. `http://uni.soracom.io/` に HTTP POST する
+6. 1 分ごとに手順 4 と 5 を繰り返す
+
+### セルラーネットワークに接続する
+
+`connectCellular()` は、ログの `[1/5]` から `[5/5]` に対応する処理です。
+
+```cpp
+WioNetwork.config.apn = APN;
+WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
+WioNetwork.config.ltemBand = LTEM_BAND;
+```
+
+最初に、SORACOM Air for セルラーの APN `soracom.io`、通信方式の LTE-M、利用する LTE-M の周波数帯を設定します。`ALL_LTEM_BAND` を指定すると、WioCellular が対応する LTE-M の周波数帯を検索します。
+
+```cpp
+WioCellular.begin();
+WioCellular.powerOn(POWER_ON_TIMEOUT);
+WioNetwork.begin();
+WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT);
+```
+
+続いて、次の順序で BG770A とネットワークを初期化します。
+
+- `WioCellular.begin()` で WioCellular ライブラリを初期化する
+- `WioCellular.powerOn()` で BG770A の電源を入れる
+- `WioNetwork.begin()` でネットワーク接続処理を開始する
+- `WioNetwork.waitUntilCommunicationAvailable()` で通信可能になるまで待つ
+
+`[READY] Cellular connection established.` が表示されると、セルラーネットワーク経由でデータを送信できる状態です。
+
+### 送信する JSON を作る
+
+`sendToHarvest()` の先頭で、稼働時間とチップ内部温度を JSON 形式の文字列にします。
+
+```cpp
+const String payload =
+    String("{\"uptime_ms\":") + millis() +
+    ",\"mcu_temp_c\":" + String(readCPUTemperature(), 1) + "}";
+```
+
+- `millis()` は、WioBG770a が起動してからの経過時間をミリ秒で返す
+- `readCPUTemperature()` は、nRF52840 のチップ内部温度を返す
+- `String(..., 1)` は、温度を小数点以下 1 桁の文字列にする
+
+生成される JSON は次の形式です。
+
+```json
+{"uptime_ms":65432,"mcu_temp_c":24.5}
+```
+
+> [!NOTE]
+> `mcu_temp_c` は nRF52840 のチップ内部温度です。室温を正確に測るための値ではありません。外部センサーの値を送る方法は次の章で扱います。
+
+### Unified Endpoint へ HTTP POST する
+
+`WioCellularArduinoTcpClient` は BG770A のセルラー通信を Arduino の `Client` として扱うためのクラスです。この TCP クライアントを `HttpClient` に渡して、HTTP 通信を行います。
+
+```cpp
+WioCellularArduinoTcpClient<WioCellularModule> tcpClient{
+    WioCellular, WioNetwork.config.pdpContextId};
+HttpClient httpClient{tcpClient, HTTP_HOST, HTTP_PORT};
+
+const int error =
+    httpClient.post(HTTP_PATH, "application/json", payload.c_str());
+```
+
+`httpClient.post()` は、`Content-Type: application/json` を指定して `http://uni.soracom.io/` に JSON を送信します。Unified Endpoint は、SIM が所属するグループで有効になっている SORACOM Harvest Data にデータを転送します。
+
+`httpClient.responseStatusCode()` で HTTP ステータスコードを取得し、`200` 以上 `300` 未満なら送信成功として扱います。この章の設定では通常 `201` が返ります。
+
+### 1 分ごとに送信する
+
+セルラー接続直後は `setup()` から `sendToHarvest()` を呼び出して、最初のデータを送信します。2 回目以降は `loop()` で 1 分待ってから送信します。
+
+```cpp
+void loop() {
+  WioCellular.doWorkUntil(SEND_INTERVAL);
+  sendToHarvest();
+}
+```
+
+`WioCellular.doWorkUntil()` は、BG770A からの通知を処理しながら `SEND_INTERVAL` で指定した時間だけ待機します。このプログラムでは `SEND_INTERVAL` を 1 分に設定しています。
+
+## 5. Harvest Data で確認する
 
 [SORACOM ユーザーコンソール](https://console.soracom.io/) で **SIM 管理** を開き、WioBG770a に挿入した SIM にチェックを入れます。
 
