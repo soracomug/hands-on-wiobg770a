@@ -41,7 +41,7 @@ platform_packages =
 framework = arduino
 board = seeed_wio_bg770a
 build_flags =
-    -DBOARD_VERSION_1_0 ; Board version 1.0
+    -DBOARD_VERSION_1_1 ; Board version 1.1
     -DCFG_LOGGER=3      ; 3:None, 2:Segger RTT, 1:Serial1, 0:Serial
     ;-D ENABLE_TRACE    ; Enable trace
     ;-O0                ; No optimization
