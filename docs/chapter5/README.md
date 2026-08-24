@@ -31,5 +31,5 @@
 正常に取得できたら、chapter4のプログラムと組み合わせて、このデータをSORACOMへ送信してみましょう。
 
 ---
-- 次: [6: あとかたづけと注意事項](../chapter6/README.md)
+- 次: [5A: 追加コンテンツ - 省電力してみる](../chapter5a/README.md)
 - 前: [4: SORACOM へデータ送信して Harvest で確認](../chapter4/README.md)
