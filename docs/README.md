@@ -15,5 +15,5 @@
 - [3: SIM の開通と SORACOM Harvest Data の設定](./chapter3/README.md)
 - [4: SORACOM へデータ送信して Harvest で確認](./chapter4/README.md)
 - [5a: 追加コンテンツ - 省電力してみる](./chapter5a/README.md)
-- [5: 追加コンテンツ - センサーをつないでみる](./chapter5/README.md)
+- [5b: 追加コンテンツ - センサーをつないでみる](./chapter5b/README.md)
 - [6: あとかたづけと注意事項](./chapter6/README.md)

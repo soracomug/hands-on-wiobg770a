@@ -1,4 +1,4 @@
-# 5A: 追加コンテンツ - 省電力してみる
+# 5a: 追加コンテンツ - 省電力してみる
 
 この章では、Wio BG770A で省電力の考え方と実装を体験します。
 
@@ -219,5 +219,5 @@ Wio BG770A のようなセルラー対応デバイスでは、通信の待ち時
 > 完成版は `docs/chapter5a/examples/3-2/soracom-uptime` にあります。
 
 ---
-- 次: [5: 追加コンテンツ - センサーをつないでみる](../chapter5/README.md)
+- 次: [5b: 追加コンテンツ - センサーをつないでみる](../chapter5b/README.md)
 - 前: [4: SORACOM へデータ送信して Harvest で確認](../chapter4/README.md)
