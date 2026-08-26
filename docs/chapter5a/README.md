@@ -219,5 +219,5 @@ Wio BG770A のようなセルラー対応デバイスでは、通信の待ち時
 > 完成版は `docs/chapter5a/examples/3-2/soracom-uptime` にあります。
 
 ---
-- 次: [6: あとかたづけと注意事項](../chapter6/README.md)
-- 前: [5: 追加コンテンツ - センサーをつないでみる](../chapter5/README.md)
+- 次: [5: 追加コンテンツ - センサーをつないでみる](../chapter5/README.md)
+- 前: [4: SORACOM へデータ送信して Harvest で確認](../chapter4/README.md)

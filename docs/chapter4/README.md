@@ -344,5 +344,5 @@ WioBG770a に挿入した SIM を選んでいるか、SIM が Harvest Data を�
 - [データを SORACOM Harvest Data に送信する](https://users.soracom.io/ja-jp/guides/getting-started/send-data-to-harvest-data/)
 
 ---
-- 次: [5: 追加コンテンツ - センサーをつないでみる](../chapter5/README.md)
+- 次: [5a: 追加コンテンツ - 省電力してみる](../chapter5a/README.md)
 - 前: [3: SIM の開通と SORACOM Harvest Data の設定](../chapter3/README.md)
