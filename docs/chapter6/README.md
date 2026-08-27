@@ -96,4 +96,4 @@ SIM 管理で対象の SIM を選択し、`操作` から `解約` を開きま�
 アカウント自体を削除する場合は、すべてのサービスを解約し、すべての利用料金の支払いが完了してから手続きを進めます。アカウントは一度削除すると復活できません。詳しい手順は [すべてのサービスを解約して SORACOM アカウントを削除する](https://users.soracom.io/ja-jp/guides/termination/terminate-all-services/) を参照してください。
 
 ---
-- 前: [5A: 追加コンテンツ - 省電力してみる](../chapter5a/README.md)
+- 前: [5b: 追加コンテンツ - センサーをつないでみる](../chapter5b/README.md)
