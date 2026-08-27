@@ -187,30 +187,30 @@ Wio BG770A のようなセルラー対応デバイスでは、通信の待ち時
 
 1. `3-1` のサンプルスケッチを開いてください。  
 2. `setup()` 内の次の処理を削除します。セルラーモジュールの電源オンとネットワーク開始は、毎回の送信前に行うため、`loop()` 内へ移動します。
-        ```cpp
-        if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
-        WioNetwork.begin();
+    ```cpp
+    if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
+    WioNetwork.begin();
 
-        if (!WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) abort();
-        ```
+    if (!WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) abort();
+    ```
 3. `loop()` の送信処理の前に、次の処理を追加します。
-        ```cpp
-        if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
-        WioNetwork.begin();
+    ```cpp
+    if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
+    WioNetwork.begin();
 
-        if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
-            JsonDoc.clear();
-            if (measure(JsonDoc)) {
-                send(JsonDoc);
-            }
+    if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
+        JsonDoc.clear();
+        if (measure(JsonDoc)) {
+            send(JsonDoc);
         }
-        ```
+    }
+    ```
 4. 送信処理の後に、ネットワークとセルラーモジュールを終了する処理を追加します。
-        ```cpp
-        WioCellular.doWorkUntil(3000);
-        WioNetwork.end();
-        if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
-        ```
+    ```cpp
+    WioCellular.doWorkUntil(3000);
+    WioNetwork.end();
+    if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
+    ```
 5. PlatformIOでビルドして、Wio BG770Aにアップロードしてください。
 
 `3-1` と同じように `uptime` がHarvest Dataへ送信され、送信後はセルラーモジュールの電源がオフになります。
