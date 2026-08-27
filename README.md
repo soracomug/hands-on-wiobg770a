@@ -9,8 +9,8 @@ WioBG770a については [製品ページ](https://seeedjp.github.io/Wiki/Wio_B
 - hello, world で L チカ (5 分)
 - SIM の開通と Harvest の ON (10 分)
 - SORACOM へのデータ送信、Harvest で確認 (10 分)
-- 早めにできた人向け: センサーをつないで試す
 - 早めにできた人向け: 省電力してみる
+- 早めにできた人向け: センサーをつないで試す
 - あとかたづけと注意事項 (5 分)
 
 ## ドキュメント
